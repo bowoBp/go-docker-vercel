@@ -26,6 +26,11 @@ func main() {
 		c.JSON(http.StatusOK, gin.H{"message": "Pong"})
 	})
 
+	// Endpoint untuk healthy check
+	r.GET("/hello", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{"message": "hello world"})
+	})
+
 	// Endpoint untuk mengambil seluruh user
 	r.GET("/users", func(c *gin.Context) {
 		c.JSON(http.StatusOK, users)
