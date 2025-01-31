@@ -29,5 +29,5 @@ COPY --from=builder /app/main .
 ENV PORT=8080
 EXPOSE 8080
 
-# Jalankan aplikasi
-CMD ["./main"]
+# Jalankan aplikasi dan tambahkan log agar terlihat di runtime logs
+CMD ["sh", "-c", "echo 'Starting Docker container...' && ./main"]
