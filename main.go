@@ -17,7 +17,13 @@ var users []User
 var nextID uint = 1
 
 func main() {
+	// Gunakan mode release agar lebih optimal
+	gin.SetMode(gin.ReleaseMode)
+
 	r := gin.Default()
+
+	// Tambahkan log saat aplikasi mulai
+	log.Println("Starting Go Server on Vercel...")
 
 	// Endpoint untuk homepage agar tidak 404
 	r.GET("/", func(c *gin.Context) {
