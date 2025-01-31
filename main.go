@@ -41,5 +41,6 @@ func main() {
 	}
 
 	log.Printf("Server running on port %s", port)
-	log.Fatal(r.Run(":" + port))
+	log.Fatal(r.Run("0.0.0.0:8080")) // Harus menggunakan 0.0.0.0 di Docker
+
 }
