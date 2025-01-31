@@ -1,10 +1,10 @@
-# Gunakan base image Golang
+# Gunakan base image Golang untuk build
 FROM golang:1.20-alpine AS builder
 
-# Set working directory di dalam container
+# Set working directory
 WORKDIR /app
 
-# Copy file go.mod dan go.sum untuk caching dependencies
+# Copy go.mod dan go.sum untuk caching dependencies
 COPY go.mod go.sum ./
 
 # Download dependencies
@@ -22,10 +22,10 @@ FROM alpine:latest
 # Set working directory
 WORKDIR /root/
 
-# Copy binary yang telah dibangun dari stage sebelumnya
+# Copy binary hasil build dari tahap sebelumnya
 COPY --from=builder /app/main .
 
-# Expose port agar sesuai dengan Vercel
+# Pastikan ENV PORT sudah ada
 ENV PORT=8080
 EXPOSE 8080
 
