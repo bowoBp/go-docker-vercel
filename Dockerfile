@@ -1,21 +1,37 @@
-# menggunakan official base image golang
-FROM golang:1.20-alpine
+# Gunakan official base image Golang untuk build stage
+FROM golang:1.20-alpine AS builder
 
-#set working di dalam container
+# Set working directory di dalam container
 WORKDIR /app
 
-# copy go.mod dan go.sum (jik ada) sebelum melakukan go mod download (untuk caching)
+# Copy file go.mod dan go.sum terlebih dahulu untuk caching dependencies
 COPY go.mod go.sum ./
+
+# Download dependencies terlebih dahulu
 RUN go mod download && go mod verify
 
-# Copy seluruh kode
+# Copy seluruh kode project ke dalam container
 COPY . .
 
-# build aplikasi
+# Build aplikasi Go
 RUN go build -o main .
 
-#expose port 8080 di container
+# ------------------------
+# Tahap kedua: Production
+# ------------------------
+
+# Gunakan image yang lebih kecil untuk menjalankan aplikasi
+FROM alpine:latest
+
+# Set working directory
+WORKDIR /root/
+
+# Copy binary yang telah dibangun dari stage sebelumnya
+COPY --from=builder /app/main .
+
+# Expose port yang akan digunakan dalam container
+ENV PORT=8080
 EXPOSE 8080
 
-#jalankan aplikasi
+# Jalankan aplikasi
 CMD ["./main"]
