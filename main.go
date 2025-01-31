@@ -1,20 +1,12 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
 	"os"
+
+	"github.com/gin-gonic/gin"
 )
-
-type User struct {
-	ID   uint   `json:"id"`
-	Name string `json:"name"`
-	Age  int    `json:"age"`
-}
-
-var users []User
-var nextID uint = 1
 
 func main() {
 	// Gunakan mode release agar lebih optimal
@@ -22,31 +14,28 @@ func main() {
 
 	r := gin.Default()
 
-	// Tambahkan log saat aplikasi mulai
-	log.Println("Starting Go Server on Vercel...")
+	// Log startup
+	log.Println("Starting Go server on Vercel...")
 
-	// Endpoint untuk homepage agar tidak 404
+	// Endpoint utama agar tidak 404
 	r.GET("/", func(c *gin.Context) {
+		log.Println("Received request at /")
 		c.JSON(http.StatusOK, gin.H{"message": "Welcome to Go API on Vercel!"})
 	})
 
-	// Endpoint untuk healthy check
+	// Endpoint health check
 	r.GET("/ping", func(c *gin.Context) {
+		log.Println("Received request at /ping")
 		c.JSON(http.StatusOK, gin.H{"message": "Pong"})
-	})
-
-	// Endpoint tambahan lainnya
-	r.GET("/hello", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{"message": "Hello World"})
 	})
 
 	// Ambil PORT dari environment variable atau gunakan default 8080
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "8080"
+		port = "3000" // Gunakan 3000 karena Vercel default ke 3000
 	}
 
+	// Jalankan server
 	log.Printf("Server running on port %s", port)
-	log.Fatal(r.Run("0.0.0.0:8080")) // Harus menggunakan 0.0.0.0 di Docker
-
+	log.Fatal(r.Run(":" + port))
 }
