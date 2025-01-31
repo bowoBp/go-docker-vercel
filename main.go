@@ -1,11 +1,10 @@
 package main
 
 import (
+	"fmt"
+	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
-	"os"
-
-	"github.com/gin-gonic/gin"
 )
 
 func main() {
@@ -29,13 +28,6 @@ func main() {
 		c.JSON(http.StatusOK, gin.H{"message": "Pong"})
 	})
 
-	// Ambil PORT dari environment variable atau gunakan default 8080
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "3000" // Gunakan 3000 karena Vercel default ke 3000
-	}
-
-	// Jalankan server
-	log.Printf("Server running on port %s", port)
-	log.Fatal(r.Run(":" + port))
+	fmt.Println("Server is running at http://localhost:8080")
+	r.Run(":8080")
 }
