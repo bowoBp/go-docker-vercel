@@ -1,7 +1,9 @@
 package main
 
 import (
+	"log"
 	"net/http"
+	"os"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -26,7 +28,7 @@ func main() {
 		c.JSON(http.StatusOK, gin.H{"message": "Pong"})
 	})
 
-	// Endpoint untuk healthy check
+	// Endpoint untuk hello world
 	r.GET("/hello", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"message": "hello world"})
 	})
@@ -34,7 +36,6 @@ func main() {
 	// Endpoint untuk mengambil seluruh user
 	r.GET("/users", func(c *gin.Context) {
 		c.JSON(http.StatusOK, users)
-		return
 	})
 
 	// Endpoint untuk mengambil user berdasarkan ID
@@ -123,5 +124,13 @@ func main() {
 		c.JSON(http.StatusNotFound, gin.H{"error": "User tidak ditemukan"})
 	})
 
-	r.Run(":8080")
+	// Ambil PORT dari environment variable
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080" // Default ke 8080 jika tidak ada PORT yang di-set
+	}
+
+	// Jalankan server pada port yang sesuai
+	log.Printf("Server running on port %s", port)
+	log.Fatal(r.Run(":" + port))
 }
