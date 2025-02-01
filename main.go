@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
+	"os"
 )
 
 type User struct {
@@ -65,11 +66,19 @@ func deleteUser(c *gin.Context) {
 
 func main() {
 	r := gin.Default()
+	r.GET("/", func(c *gin.Context) {
+		c.JSON(200, gin.H{"message": "Welcome to the API"})
+	})
+
 	r.GET("/users", getUsers)
 	r.GET("/users/:id", getUserByID)
 	r.POST("/users", createUser)
 	r.PUT("/users/:id", updateUser)
 	r.DELETE("/users/:id", deleteUser)
 
-	r.Run() // Port default 8080
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+	r.Run(":" + port) // Run dengan port yang diberikan oleh Vercel
 }
