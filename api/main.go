@@ -5,25 +5,21 @@ import (
 	"net/http"
 )
 
-func main() {
-	// Inisialisasi router GIN server
+func Handler(w http.ResponseWriter, r *http.Request) {
 	router := gin.Default()
 
-	// Endpoint utama
+	// Define routes
 	router.GET("/", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"message": "Welcome to the API"})
 	})
 
-	// Endpoint CRUD Users
 	router.GET("/users", getUsers)
 	router.GET("/users/:id", getUserByID)
 	router.POST("/users", createUser)
 	router.PUT("/users/:id", updateUser)
 	router.DELETE("/users/:id", deleteUser)
 
-	// Gunakan PORT dari environment variable (untuk Vercel)
-	port := "3000"
-	router.Run(":" + port) // Gunakan port 3000 untuk Vercel
+	router.ServeHTTP(w, r)
 }
 
 // Model User
