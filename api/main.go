@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	// Inisialisasi router GIN
+	// Inisialisasi router GIN server
 	router := gin.Default()
 
 	// Endpoint utama
