@@ -17,6 +17,10 @@ var users []User
 func main() {
 	r := gin.Default()
 
+	r.GET("/", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{"message": "Welcome to the API"})
+	})
+
 	// Route untuk mendapatkan semua user
 	r.GET("/users", func(c *gin.Context) {
 		c.JSON(http.StatusOK, users)
